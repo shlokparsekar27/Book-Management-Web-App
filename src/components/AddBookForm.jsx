@@ -173,7 +173,7 @@ const AddBookForm = ({ onAdd }) => { // Removed prefillData prop as it's no long
         <>
           <div className="flex gap-2 mb-2">
 
-            <div className="flex flex-col md:flex-row md:items-center gap-2 mb-2">
+            <div className="flex flex-col md:flex-row md:items-center gap-2 mb-2 w-full">
               <input
                 type="text"
                 placeholder="Search by title or ISBN..."
