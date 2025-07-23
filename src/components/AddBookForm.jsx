@@ -180,13 +180,13 @@ const AddBookForm = ({ onAdd }) => { // Removed prefillData prop as it's no long
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyPress={(e) => { if (e.key === 'Enter') searchBooks(); }}
-                className="p-2 rounded bg-white/30 placeholder-cyan-950 text-cyan-950 focus:outline-none focus:ring-2 focus:ring-cyan-400 w-full"
+                className="flex-grow border p-2 rounded bg-white/30 placeholder-cyan-950 text-cyan-950 focus:outline-none focus:ring-2 focus:ring-cyan-400"
               />
               <button
                 type="button"
                 onClick={searchBooks}
                 disabled={isLoadingSearch}
-                className="bg-cyan-800 text-white px-4 py-2 rounded hover:bg-cyan-900 disabled:opacity-50 w-full md:w-auto"
+                className="bg-cyan-800 text-white px-4 py-2 rounded hover:bg-cyan-900 disabled:opacity-50"
               >
                 {isLoadingSearch ? 'Searching...' : 'Search'}
               </button>
