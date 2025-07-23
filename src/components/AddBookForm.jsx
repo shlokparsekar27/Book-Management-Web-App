@@ -15,7 +15,7 @@ const AddBookForm = ({ onAdd }) => { // Removed prefillData prop as it's no long
   // 'initial': show choice buttons
   // 'search': show search section
   // 'manual': show manual form fields
-  const [activeSubMode, setActiveSubMode] = useState('initial'); 
+  const [activeSubMode, setActiveSubMode] = useState('initial');
 
   // States for Google Books API search (kept here as per previous decision)
   const [searchTerm, setSearchTerm] = useState('');
@@ -171,26 +171,27 @@ const AddBookForm = ({ onAdd }) => { // Removed prefillData prop as it's no long
       {/* NEW: Search Section (conditionally rendered) */}
       {activeSubMode === 'search' && (
         <>
-          <div className="p-4 bg-white/10 rounded-lg shadow-inner">
-            <h3 className="text-lg font-semibold mb-2 text-cyan-950">Search by Title or ISBN:</h3>
-            <div className="flex gap-2 mb-2">
+          <div className="flex gap-2 mb-2">
+
+            <div className="flex flex-col md:flex-row md:items-center gap-2 mb-2">
               <input
                 type="text"
                 placeholder="Search by title or ISBN..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onKeyPress={(e) => { if (e.key === 'Enter') searchBooks(); }}
-                className="flex-grow border p-2 rounded bg-white/30 placeholder-cyan-950 text-cyan-950 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+                className="flex-grow border p-2 rounded bg-white/30 placeholder-cyan-950 text-cyan-950 focus:outline-none focus:ring-2 focus:ring-cyan-400 w-full"
               />
               <button
                 type="button"
                 onClick={searchBooks}
                 disabled={isLoadingSearch}
-                className="bg-cyan-800 text-white px-4 py-2 rounded hover:bg-cyan-900 disabled:opacity-50"
+                className="bg-cyan-800 text-white px-4 py-2 rounded hover:bg-cyan-900 disabled:opacity-50 w-full md:w-auto"
               >
                 {isLoadingSearch ? 'Searching...' : 'Search'}
               </button>
             </div>
+
 
             {/* Search Results Display */}
             {searchResults.length > 0 && (
