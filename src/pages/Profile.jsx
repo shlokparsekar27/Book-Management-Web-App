@@ -101,7 +101,7 @@ const Profile = ({ books }) => {
                 />
               ) : (
                 <div className="w-28 h-28 mx-auto rounded-full bg-gray-300 flex items-center justify-center text-gray-700 text-3xl font-bold shadow-inner">
-                  ?
+                  👤
                 </div>
               )}
               {editing && (
