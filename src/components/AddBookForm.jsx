@@ -169,60 +169,60 @@ const AddBookForm = ({ onAdd }) => { // Removed prefillData prop as it's no long
       )}
 
       {/* NEW: Search Section (conditionally rendered) */}
-      {activeSubMode === 'search' && (
-        <>
-          <div className="flex gap-2 mb-2">
+{activeSubMode === 'search' && (
+  <>
+    <div className="flex flex-col gap-2 mb-2 md:flex-row md:items-center">
 
-            <div className="flex flex-col md:flex-row md:items-center gap-2 mb-2">
-              <input
-                type="text"
-                placeholder="Search by title or ISBN..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onKeyPress={(e) => { if (e.key === 'Enter') searchBooks(); }}
-                className="flex-grow border p-2 rounded bg-white/30 placeholder-cyan-950 text-cyan-950 focus:outline-none focus:ring-2 focus:ring-cyan-400 w-full"
-              />
-              <button
-                type="button"
-                onClick={searchBooks}
-                disabled={isLoadingSearch}
-                className="bg-cyan-800 text-white px-4 py-2 rounded hover:bg-cyan-900 disabled:opacity-50 w-full md:w-auto"
-              >
-                {isLoadingSearch ? 'Searching...' : 'Search'}
-              </button>
-            </div>
+      <input
+        type="text"
+        placeholder="Search by title or ISBN..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyPress={(e) => { if (e.key === 'Enter') searchBooks(); }}
+        className="border p-2 rounded bg-white/30 placeholder-cyan-950 text-cyan-950 focus:outline-none focus:ring-2 focus:ring-cyan-400 w-full"
+      />
 
+      <button
+        type="button"
+        onClick={searchBooks}
+        disabled={isLoadingSearch}
+        className="bg-cyan-800 text-white px-4 py-2 rounded hover:bg-cyan-900 disabled:opacity-50 w-full md:w-auto"
+      >
+        {isLoadingSearch ? 'Searching...' : 'Search'}
+      </button>
+    </div>
 
-            {/* Search Results Display */}
-            {searchResults.length > 0 && (
-              <div className="mt-4 max-h-60 overflow-y-auto border border-gray-300 rounded-lg bg-white/20">
-                {searchResults.map((book) => (
-                  <div
-                    key={book.id}
-                    onClick={() => selectBookFromSearch(book)}
-                    className="flex items-center gap-3 p-3 border-b border-gray-400 cursor-pointer hover:bg-white/30 transition"
-                  >
-                    <img src={book.cover} alt={book.title} className="w-12 h-16 object-cover rounded" />
-                    <div>
-                      <p className="font-semibold text-cyan-950">{book.title}</p>
-                      <p className="text-sm text-gray-700">{book.author}</p>
-                    </div>
-                  </div>
-                ))}
-                {searchResults.length > 0 && <p className="text-xs text-cyan-950 p-2">Click a book to pre-fill the form.</p>}
-              </div>
-            )}
-          </div>
-          {/* Button to go back to initial choice */}
-          <button
-            type="button"
-            onClick={() => { setActiveSubMode('initial'); setSearchResults([]); setSearchTerm(''); }}
-            className="mt-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 w-full"
+    {/* Search Results Display */}
+    {searchResults.length > 0 && (
+      <div className="mt-4 max-h-60 overflow-y-auto border border-gray-300 rounded-lg bg-white/20">
+        {searchResults.map((book) => (
+          <div
+            key={book.id}
+            onClick={() => selectBookFromSearch(book)}
+            className="flex items-center gap-3 p-3 border-b border-gray-400 cursor-pointer hover:bg-white/30 transition"
           >
-            Back to Choices
-          </button>
-        </>
-      )}
+            <img src={book.cover} alt={book.title} className="w-12 h-16 object-cover rounded" />
+            <div>
+              <p className="font-semibold text-cyan-950">{book.title}</p>
+              <p className="text-sm text-gray-700">{book.author}</p>
+            </div>
+          </div>
+        ))}
+        {searchResults.length > 0 && <p className="text-xs text-cyan-950 p-2">Click a book to pre-fill the form.</p>}
+      </div>
+    )}
+
+    {/* Button to go back to initial choice */}
+    <button
+      type="button"
+      onClick={() => { setActiveSubMode('initial'); setSearchResults([]); setSearchTerm(''); }}
+      className="mt-4 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 w-full"
+    >
+      Back to Choices
+    </button>
+  </>
+)}
+
 
       {/* NEW: Manual Add Section (conditionally rendered) */}
       {activeSubMode === 'manual' && (
