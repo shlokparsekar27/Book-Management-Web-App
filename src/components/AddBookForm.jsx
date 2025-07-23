@@ -186,7 +186,7 @@ const AddBookForm = ({ onAdd }) => { // Removed prefillData prop as it's no long
                 type="button"
                 onClick={searchBooks}
                 disabled={isLoadingSearch}
-                className="bg-cyan-800 text-white px-4 py-2 rounded hover:bg-cyan-900 disabled:opacity-50"
+                className="br bg-cyan-800 text-white px-4 py-2 rounded hover:bg-cyan-900 disabled:opacity-50"
               >
                 {isLoadingSearch ? 'Searching...' : 'Search'}
               </button>
