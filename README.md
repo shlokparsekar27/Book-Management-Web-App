@@ -1,4 +1,4 @@
-## BookWorm – Book Management Web App
+# BookWorm – Book Management Web App
 
 BookWorm is a modern and sleek web app that helps you keep track of your reading journey. Built using **React + Tailwind CSS**, it allows users to log books, track progress, view reading streaks, and personalize their reading profile.
 
@@ -25,7 +25,7 @@ BookWorm provides a streamlined way to manage your personal library and reading 
 
 ### Features
 
-* **Add and manage books:** Easily add books and categorize them into "Reading," "Want to Read," and "Read" lists.
+* **Add and manage books: (Search or Manually add)** Easily add books and categorize them.
 * **Track reading progress:** Log your current page to keep tabs on how far you've come in each book.
 * **Streak system:** Stay motivated with a streak system that rewards consistent daily reading activity.
 * **User profile:** Personalize your experience with a custom name, favorite genre, and bio.
