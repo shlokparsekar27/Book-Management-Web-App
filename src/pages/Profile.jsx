@@ -84,7 +84,7 @@ const Profile = ({ books }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-[url('/images/img4.jpg')] bg-cover bg-center bg-no-repeat">
+    <div className="relative min-h-screen bg-[url('/images/img4.jpg')] bg-cover bg-center bg-no-repeat md:fixed md:inset-0">
       <div className="absolute inset-0 bg-black opacity-50"></div>
 
       <div className="relative z-10 min-h-screen pt-20 flex justify-center items-start">
