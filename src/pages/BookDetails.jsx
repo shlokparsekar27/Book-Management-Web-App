@@ -245,6 +245,22 @@ const BookDetails = ({ books, onUpdateBook, onToggleFavorite }) => {
                             alt={book.title}
                             className="w-48 h-64 object-cover rounded-lg shadow-md flex-shrink-0"
                         />
+                        {showColorBackground ? (
+            // NEW: Div for random background color
+            <div
+              className="w-full h-48 mb-4 rounded flex items-center justify-center text-center text-gray-500 font-semibold text-sm"
+              style={{ backgroundColor: randomBgColor }}
+            >
+              No Cover
+            </div>
+          ) : (
+            // Existing img tag for actual cover image
+            <img
+              src={book.cover}
+              alt={book.title}
+              className="w-full h-48 object-cover mb-4 rounded"
+            />
+          )}
                         {/* NEW: Favorite button/icon */}
                         <button
                             onClick={handleFavoriteClick} // ADD this onClick handler
