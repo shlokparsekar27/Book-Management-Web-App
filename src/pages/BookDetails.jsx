@@ -135,10 +135,6 @@ const BookDetails = ({ books, onUpdateBook, onToggleFavorite }) => {
 
 
     // Handle deadline update
-    const handleDeadlineChange = (date) => {
-        setNewDeadline(date);
-    };
-
     const handleSaveDeadline = () => {
         const updatedBook = {
             ...book,
@@ -219,7 +215,7 @@ const BookDetails = ({ books, onUpdateBook, onToggleFavorite }) => {
 
 
     return (
-        <div className="fixed inset-0 bg-[url('/images/img5.jpg')] bg-cover bg-center bg-no-repeat">
+        <div className="relative min-h-screen bg-[url('/images/img5.jpg')] bg-cover bg-center bg-no-repeat md:fixed md:inset-0">
             {/* Overlay for readability */}
             <div className="absolute inset-0 bg-black opacity-30"></div>
             <div className="container mx-auto p-6 bg-white/50 shadow-lg rounded-lg mt-20 max-w-4xl pt-4 relative z-10">
