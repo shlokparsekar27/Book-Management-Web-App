@@ -22,7 +22,7 @@ const Home = ({ handleAddBook }) => {
 
       <div className="relative z-10 min-h-screen flex justify-center pt-20 px-4 sm:px-8">
         <div className="w-full max-w-lg bg-transparent p-4 sm:p-8 rounded-2xl text-white">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-center text-cyan-900 mb-4 sm:mb-6">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-center text-white mb-4 sm:mb-6">
             Add New Book
           </h1>
 
