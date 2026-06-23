@@ -1,52 +1,74 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Library from './pages/Library';
 import Profile from './pages/Profile';
 import BookDetails from './pages/BookDetails';
-
-const getHardcodedDefaultBooks = () => [];
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
+import Documentation from './pages/Documentation';
+import { fetchBooks, createBook, updateBook, deleteBook } from './services/api';
 
 const App = () => {
-  const getInitialBooks = () => {
-    const storedBooks = localStorage.getItem('bookwormBooks');
-    if (storedBooks) {
-      const parsedBooks = JSON.parse(storedBooks);
-      return parsedBooks.map(book => ({
-        ...book,
-        deadline: book.deadline ? book.deadline : null,
-        dailyLog: book.dailyLog ? JSON.parse(book.dailyLog) : [],
-        isFavorite: book.isFavorite === true || book.isFavorite === 1
-      }));
-    }
-    return getHardcodedDefaultBooks();
+  const [theme, setTheme] = useState(() => localStorage.getItem('bookwormTheme') || 'dark');
+  
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('bookwormTheme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
 
-  const [books, setBooks] = useState(getInitialBooks);
+  const [books, setBooks] = useState(() => {
+    const cached = localStorage.getItem('bookwormBooks');
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        return parsed.map(book => ({
+          ...book,
+          dailyLog: Array.isArray(book.dailyLog) ? book.dailyLog : []
+        }));
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  });
 
   useEffect(() => {
-    localStorage.setItem('bookwormBooks', JSON.stringify(books.map(book => ({
-      ...book,
-      dailyLog: JSON.stringify(book.dailyLog)
-    }))));
+    let active = true;
+    fetchBooks().then(data => {
+      if (active) setBooks(data);
+    });
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('bookwormBooks', JSON.stringify(books));
   }, [books]);
 
-  const handleAddBook = (book) => {
+  const handleAddBook = async (book) => {
     const newBook = {
       ...book,
-      id: Date.now(),
       isFavorite: false,
       currentPage: 0,
       dailyLog: [],
-      startedOn: new Date().toISOString().split('T')[0],
+      startedOn: book.startedOn || new Date().toISOString().split('T')[0],
       finishedOn: null,
       deadline: null
     };
-    setBooks([newBook, ...books]);
+
+    setBooks(prev => [newBook, ...prev]);
+    const savedBook = await createBook(newBook);
+    setBooks(prev => prev.map(b => b.title === newBook.title && b.author === newBook.author ? savedBook : b));
   };
 
-  // 🔥 Streak logic
   const updateStreak = () => {
     const today = new Date().toISOString().split('T')[0];
     const lastActiveDate = localStorage.getItem('readoraLastActiveDate');
@@ -72,32 +94,43 @@ const App = () => {
     }
   };
 
-  const handleUpdateBook = (updatedBook) => {
+  const handleUpdateBook = async (updatedBook) => {
     setBooks(prevBooks =>
       prevBooks.map(book =>
         book.id === updatedBook.id ? updatedBook : book
       )
     );
-    updateStreak(); // 🔥 Trigger streak update
+    updateStreak();
+    await updateBook(updatedBook);
   };
 
-  const handleRemoveBook = (bookId) => {
+  const handleRemoveBook = async (bookId) => {
     setBooks(prevBooks => prevBooks.filter(book => book.id !== bookId));
-    localStorage.removeItem(`book_${bookId}_showGoalForm`);
+    await deleteBook(bookId);
   };
 
-  const handleToggleFavorite = (bookId) => {
+  const handleToggleFavorite = async (bookId) => {
+    const targetBook = books.find(b => b.id === bookId);
+    if (!targetBook) return;
+
+    const updatedBook = {
+      ...targetBook,
+      isFavorite: !targetBook.isFavorite
+    };
+
     setBooks(prevBooks =>
       prevBooks.map(book =>
-        book.id === bookId ? { ...book, isFavorite: !book.isFavorite } : book
+        book.id === bookId ? updatedBook : book
       )
     );
+    await updateBook(updatedBook);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <Navbar />
-      <div>
+    <div className="min-h-screen bg-[var(--bg-primary)] text-[var(--text-primary)] flex flex-col font-sans antialiased relative transition-colors duration-300">
+      <Navbar books={books} theme={theme} toggleTheme={toggleTheme} />
+      
+      <main className="flex-1 w-full pt-12 pb-24 min-h-[100vh]">
         <Routes>
           <Route path="/" element={<Home handleAddBook={handleAddBook} />} />
           <Route
@@ -109,8 +142,14 @@ const App = () => {
             path="/book/:id"
             element={<BookDetails books={books} onUpdateBook={handleUpdateBook} onToggleFavorite={handleToggleFavorite} />}
           />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/docs" element={<Documentation />} />
+          <Route path="*" element={<Home handleAddBook={handleAddBook} />} />
         </Routes>
-      </div>
+      </main>
+
+      <Footer />
     </div>
   );
 };
