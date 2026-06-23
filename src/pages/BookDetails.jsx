@@ -6,7 +6,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 const BookDetails = ({ books, onUpdateBook, onToggleFavorite }) => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const book = books.find(b => b.id === parseInt(id) || b.id === id); 
+    const book = books.find(b => b.id === parseInt(id) || b.id === id);
     const currentBookLocalStorageKey = book ? `book_${book.id}_showGoalForm` : null;
 
     const formatDate = (isoDate) => {
@@ -17,7 +17,7 @@ const BookDetails = ({ books, onUpdateBook, onToggleFavorite }) => {
         }
         return isoDate;
     };
-    
+
     const [sliderCurrentPage, setSliderCurrentPage] = useState(book ? book.currentPage : 0);
     const [newDeadline, setNewDeadline] = useState(book && book.deadline ? new Date(book.deadline) : null);
     const [showGoalForm, setShowGoalForm] = useState(false);
@@ -52,7 +52,7 @@ const BookDetails = ({ books, onUpdateBook, onToggleFavorite }) => {
     }
 
     const progress = book.totalPages > 0 ? Math.round((book.currentPage / book.totalPages) * 100) : 0;
-    
+
     const handleFavoriteClick = () => onToggleFavorite(book.id);
 
     const handleUpdateProgress = () => {
@@ -66,26 +66,26 @@ const BookDetails = ({ books, onUpdateBook, onToggleFavorite }) => {
             onConfirm: () => {
                 const newCurrentPage = sliderCurrentPage;
                 let updatedFinishedOn = book.finishedOn;
-                
+
                 if (newCurrentPage === book.totalPages && newCurrentPage > 0 && !book.finishedOn) {
                     updatedFinishedOn = new Date().toISOString().split('T')[0];
                 } else if (newCurrentPage < book.totalPages && book.finishedOn) {
                     updatedFinishedOn = null;
                 }
-                
-                const newDailyLogEntry = { 
-                    date: new Date().toISOString().split('T')[0], 
-                    pagesRead: pagesReadThisSession, 
-                    timestamp: new Date().toISOString() 
+
+                const newDailyLogEntry = {
+                    date: new Date().toISOString().split('T')[0],
+                    pagesRead: pagesReadThisSession,
+                    timestamp: new Date().toISOString()
                 };
-                
-                const updatedBook = { 
-                    ...book, 
-                    currentPage: newCurrentPage, 
-                    finishedOn: updatedFinishedOn, 
-                    dailyLog: [...(book.dailyLog ?? []), newDailyLogEntry] 
+
+                const updatedBook = {
+                    ...book,
+                    currentPage: newCurrentPage,
+                    finishedOn: updatedFinishedOn,
+                    dailyLog: [...(book.dailyLog ?? []), newDailyLogEntry]
                 };
-                
+
                 onUpdateBook(updatedBook);
             }
         });
@@ -151,7 +151,7 @@ const BookDetails = ({ books, onUpdateBook, onToggleFavorite }) => {
 
     return (
         <div className="animate-fade-in w-full pb-24">
-            
+
             {/* Top Navigation Bar for Details */}
             <div className="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center relative z-20">
                 <button onClick={() => {
@@ -184,7 +184,7 @@ const BookDetails = ({ books, onUpdateBook, onToggleFavorite }) => {
                             </div>
                         )}
                     </div>
-                    
+
                     {/* Editorial Titles */}
                     <div className="flex-1 text-center md:text-left pb-2">
                         <p className="text-[var(--accent-primary)] text-xs font-semibold uppercase tracking-widest mb-3">{book.category}</p>
@@ -203,19 +203,19 @@ const BookDetails = ({ books, onUpdateBook, onToggleFavorite }) => {
 
             {/* Main Content Area */}
             <div className="max-w-5xl mx-auto px-6 mt-16 grid grid-cols-1 lg:grid-cols-3 gap-16">
-                
+
                 {/* Left Column: Progress & Logging */}
                 <div className="lg:col-span-2 space-y-12">
-                    
+
                     {/* Progress Section */}
                     <section>
                         <h2 className="text-sm font-semibold uppercase tracking-widest text-[var(--text-tertiary)] mb-6 border-b border-[var(--border-subtle)] pb-2">Reading Progress</h2>
-                        
+
                         <div className="flex items-end justify-between mb-3 text-[var(--text-primary)]">
                             <div className="font-heading text-4xl">{progress}% <span className="text-sm font-sans text-[var(--text-muted)] tracking-normal">read</span></div>
                             <div className="text-sm text-[var(--text-muted)]">{book.currentPage} / {book.totalPages} pages</div>
                         </div>
-                        
+
                         <div className="w-full bg-[var(--bg-secondary)] border border-[var(--border-subtle)] rounded-full h-2 mb-8">
                             <div className="bg-[var(--accent-primary)] h-full rounded-full transition-all duration-500 ease-out" style={{ width: `${progress}%` }}></div>
                         </div>
@@ -229,24 +229,24 @@ const BookDetails = ({ books, onUpdateBook, onToggleFavorite }) => {
                         {/* Session Logger */}
                         <div className="bg-[var(--bg-secondary)] border border-[var(--border-subtle)] p-6 md:p-8 rounded-sm">
                             <h3 className="text-lg font-heading text-[var(--text-primary)] mb-6">Log Today's Session</h3>
-                            
+
                             <div className="flex items-center gap-4 mb-8">
                                 <button onClick={() => handlePageChangeByButton(-1)} className="w-8 h-8 rounded-sm border border-[var(--border-strong)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)] flex items-center justify-center font-mono text-sm transition-colors">-</button>
-                                <input 
-                                    type="range" min="0" max={book.totalPages} value={sliderCurrentPage} 
-                                    onChange={(e) => handlePageChange(parseInt(e.target.value))} 
-                                    className="flex-grow accent-[var(--accent-primary)] h-1 bg-[var(--bg-tertiary)] rounded-full appearance-none cursor-pointer" 
+                                <input
+                                    type="range" min="0" max={book.totalPages} value={sliderCurrentPage}
+                                    onChange={(e) => handlePageChange(parseInt(e.target.value))}
+                                    className="flex-grow accent-[var(--accent-primary)] h-1 bg-[var(--bg-tertiary)] rounded-full appearance-none cursor-pointer"
                                 />
                                 <button onClick={() => handlePageChangeByButton(1)} className="w-8 h-8 rounded-sm border border-[var(--border-strong)] text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:border-[var(--accent-primary)] flex items-center justify-center font-mono text-sm transition-colors">+</button>
                             </div>
-                            
+
                             <div className="flex flex-col sm:flex-row items-center gap-4">
                                 <div className="text-center sm:text-left flex-1">
                                     <p className="text-sm text-[var(--text-muted)]">Currently on page <strong className="text-[var(--text-primary)] font-mono">{sliderCurrentPage}</strong></p>
                                 </div>
                                 <div className="flex gap-3 w-full sm:w-auto">
-                                    <button 
-                                        onClick={handleUpdateProgress} 
+                                    <button
+                                        onClick={handleUpdateProgress}
                                         disabled={sliderCurrentPage === book.currentPage}
                                         className="w-full sm:w-auto px-6 py-2.5 bg-[var(--accent-primary)] text-[var(--bg-primary)] font-semibold rounded-sm hover:bg-amber-500 disabled:opacity-50 disabled:hover:bg-[var(--accent-primary)] transition-colors"
                                     >
@@ -261,7 +261,7 @@ const BookDetails = ({ books, onUpdateBook, onToggleFavorite }) => {
 
                 {/* Right Column: Metadata & Goals */}
                 <div className="space-y-10">
-                    
+
                     {/* Metadata Box */}
                     <section>
                         <h2 className="text-sm font-semibold uppercase tracking-widest text-[var(--text-tertiary)] mb-6 border-b border-[var(--border-subtle)] pb-2">Publication Details</h2>
