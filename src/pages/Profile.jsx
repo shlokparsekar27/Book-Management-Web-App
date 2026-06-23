@@ -4,8 +4,6 @@ const Profile = ({ books }) => {
   const totalBooks = books.length;
   const currentlyReading = books.filter(book => !book.finishedOn).length;
   const finishedBooks = books.filter(book => book.finishedOn).length;
-  const favoriteBooks = books.filter(book => book.isFavorite).length;
-
   const [username, setUsername] = useState('');
   const [editing, setEditing] = useState(false);
   const [avatar, setAvatar] = useState(null);

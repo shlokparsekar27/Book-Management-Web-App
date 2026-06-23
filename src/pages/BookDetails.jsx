@@ -104,17 +104,7 @@ const BookDetails = ({ books, onUpdateBook, onToggleFavorite }) => {
         setShowGoalForm(true);
     };
 
-    const handleReadAgain = () => {
-        setConfirmModal({
-            show: true,
-            title: 'Read Again',
-            message: 'Reset your page reading logs and read this book from the beginning?',
-            onConfirm: () => {
-                const updatedBook = { ...book, currentPage: 0, finishedOn: null, dailyLog: [] };
-                onUpdateBook(updatedBook);
-            }
-        });
-    };
+
 
     const handleResetLog = () => {
         setConfirmModal({
